@@ -15,7 +15,9 @@ try {
   const body1 = {
     requiredString: 'string1',
     requiredArray: [
-      'arraystring'
+      'arraystring1',
+      'arraystring2',
+      'arraystring3'
     ],
     unrequiredMulti: true,
   };
@@ -43,7 +45,46 @@ try {
     'Setting an unrequired object as a string should fail.',
     false,
     validate.test1(body1),
-  );  
+  );
+
+  // original regex ^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$
+  // escaped regex ^(([^<>()[\\]\\.,;:\\s@\"]+(\\.[^<>()[\\]\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$
+  displayTest(
+    'A valid email should pass with appropriate pattern.',
+    true,
+    validate.test2({ email: 'slassnpm@gmail.com' }),
+  );
+
+  displayTest(
+    'An invalid email should fail with appropriate pattern.',
+    false,
+    validate.test2({ email: 'slassnpm@gmailcom' }),
+  );
+
+  displayTest(
+    'Adding invalid types as a child of an array should fail.',
+    false,
+    validate.test3({
+      array: [
+        'arraystring1',
+        'arraystring2',
+        [],
+      ]
+    }),
+  );
+
+  displayTest(
+    'Adding valid types as a child of an array should pass.',
+    true,
+    validate.test3({
+      array: [
+        'arraystring1',
+        'arraystring2',
+        {},
+      ]
+    }),
+  );
+
 } catch (err) {
   console.error('UNABLE TO START OR COMPLETE TESTS');
 }
