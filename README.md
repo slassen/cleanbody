@@ -16,11 +16,11 @@ const Cleanbody = require('cleanbody');
  * You can use a valid JS object if you don't want to import JSON.
  */
 const schema = {
-  addUser: {
-    email: {
-      type: 'string',
-      required: true,
-      pattern: '',
+  addUser: {            // <-- root keys on the schema are what functions you will call later. ex. validate.addUser()
+    email: {            // <-- each key here is a key on the JSON object you are validating
+      type: 'string',   // <-- you can include an string array or a string of what type(s) you allow for this value
+      required: true,   // <-- the key can be required or not required. but if it is defined it must meet all criteria
+      pattern: '',      // <-- if the value type is a string and you include a pattern in the schema it will validate it
     },
     user: {
       type: 'string',
@@ -54,3 +54,5 @@ app.post('/user', (req, res, next) => {
   }
 });
 ```
+
+*Note: When using an array, children of type `object` are not checked. Support to be added in a future version.*
