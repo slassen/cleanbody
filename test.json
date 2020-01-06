@@ -1,0 +1,35 @@
+{
+  "test1": {
+    "requiredString": {
+      "type": "string",
+      "required": true
+    },
+    "unrequiredString1": {
+      "type": "string",
+      "required": false
+    },
+    "unrequiredString2": {
+      "type": "string"
+    },
+    "unrequiredObject": {
+      "type": "object"
+    },
+    "requiredArray": {
+      "type": "array",
+      "required": true,
+      "children": [
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "unrequiredMulti": {
+      "type": [
+        "undefined",
+        "boolean",
+        "string"
+      ],
+      "required": false
+    }
+  }
+}
