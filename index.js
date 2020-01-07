@@ -31,15 +31,41 @@ const validateField = (fieldSchema, field) => {
   }
 
   /**
-   * For arrays we have an children property. You can specify the type of children and
+   * For arrays we have a children property. You can specify the type of children and
    * mark them as required or use the same properties you would at the root of the object.
+   * In addition, check to make sure the optional minimum and maximum elements are met.
    */
   const fieldChildren = fieldSchema.children;
-  if (fieldChildren) {
+  if (actualType === 'array' && fieldChildren) {
+    if ((fieldSchema.maximum && field.length > fieldSchema.maximum) || (fieldSchema.minimum && field.length < fieldSchema.minimum)) {
+      return false;
+    }
+
     for (let i = 0; i < field.length; i++) {
       if (!validateField(fieldChildren, field[i])) {
         return false;
       };
+    }
+  }
+
+  /**
+   * For objects we have a properties property. You can use the same properties for this
+   * type but you need to assign each property of the object it's own object that includes
+   * things like type, required, pattern, et. cetera. We must loop twice. Once through the
+   * body keys and once through the schema keys to ensure required keys are included.
+   */
+  const fieldProperties = fieldSchema.properties;
+  if (actualType === 'object' && fieldProperties) {
+    for (let key in field) {
+      if (!validateField(fieldProperties[key], field[key])) {
+        return false;
+      }
+    }
+
+    for (let key in fieldProperties) {
+      if (fieldProperties[key].required && field[key] === undefined) {
+        return false;
+      }
     }
   }
 

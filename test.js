@@ -81,10 +81,65 @@ try {
         'arraystring1',
         'arraystring2',
         {},
-      ]
+      ],
+    }),
+  );
+
+  displayTest(
+    'Not meeting the minimum number of children should fail.',
+    false,
+    validate.test3({
+      array: [
+        'arraystring1',
+      ],
+    }),
+  );
+
+  displayTest(
+    'Exceeding the maximum number of children should fail.',
+    false,
+    validate.test3({
+      array: [
+        'arraystring1',
+        'arraystring2',
+        'arraystring3',
+        'arraystring4',
+      ],
+    }),
+  );
+
+  displayTest(
+    'An object with valid properties and obmitting an optional property should pass.',
+    true,
+    validate.test4({
+      object: {
+        key1: 'string1',
+      },
+    }),
+  );
+
+  displayTest(
+    'An object obmitting a required property should fail.',
+    false,
+    validate.test4({
+      object: {
+        key2: true,
+      },
+    }),
+  );
+
+  displayTest(
+    'An object with invalid properties should fail.',
+    false,
+    validate.test4({
+      object: {
+        key1: 'string1',
+        key2: 'badbool',
+      },
     }),
   );
 
 } catch (err) {
   console.error('UNABLE TO START OR COMPLETE TESTS');
+  console.error(err);
 }

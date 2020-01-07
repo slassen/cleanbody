@@ -54,5 +54,3 @@ app.post('/user', (req, res, next) => {
   }
 });
 ```
-
-*Note: When using an array, children of type `object` are not checked. Support to be added in a future version.*

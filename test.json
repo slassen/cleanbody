@@ -41,11 +41,28 @@
     "array": {
       "type": "array",
       "required": true,
+      "minimum": 2,
+      "maximum": 3,
       "children": {
         "type": [
           "string",
           "object"
         ]
+      }
+    }
+  },
+  "test4": {
+    "object": {
+      "type": "object",
+      "required": true,
+      "properties": {
+        "key1": {
+          "type": "string",
+          "required": true
+        },
+        "key2": {
+          "type": "boolean"
+        }
       }
     }
   }
