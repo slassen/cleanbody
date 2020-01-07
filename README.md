@@ -54,3 +54,7 @@ app.post('/user', (req, res, next) => {
   }
 });
 ```
+
+### Notes
+1. 1.x.x versions of this project's schema structure may be changed without versioning. Pay attention to version history if you use it during version 1.
+2. A future version is likely to support root level bodies as arrays and strings, not just objects.
