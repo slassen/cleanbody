@@ -2,7 +2,12 @@ const Cleanbody = require('./index');
 const schema = require('./test.json');
 
 let testCount = 1;
+let failed = 0;
+let passed = 0;
 const displayTest = ( description, expected, actual) => {
+  if (expected === actual) passed++;
+  else failed++;
+
   console.group(`\n #${testCount} ${description} [${expected === actual ? 'PASSED' : 'FAILED'}]`);
   console.log(`expected: ${expected}, actual: ${actual} `);
   console.groupEnd();
@@ -139,6 +144,39 @@ try {
     }),
   );
 
+  displayTest(
+    'An invalid json string should fail.',
+    false,
+    validate.test5({
+      json: "abcdef",
+    }),
+  );
+
+  displayTest(
+    'A valid json string with validated properties should pass.',
+    true,
+    validate.test5({
+      json: "[\"string1\",\"string2\"]",
+    }),
+  );
+
+  displayTest(
+    'A valid json string with invalid properties should fail.',
+    false,
+    validate.test5({
+      json: "[\"string1\",[]]",
+    }),
+  );
+
+  displayTest(
+    'A valid json string with correct type should pass.',
+    true,
+    validate.test6({
+      json: "{\"key\":\"value\"}",
+    }),
+  );
+
+  console.log(`\nTESTS COMPLETE   ${passed} PASSED | ${failed} FAILED\n`)
 } catch (err) {
   console.error('UNABLE TO START OR COMPLETE TESTS');
   console.error(err);

@@ -65,5 +65,34 @@
         }
       }
     }
+  },
+  "test5": {
+    "json": {
+      "type": "string",
+      "required": true,
+      "json": {
+        "type": "array",
+        "children": {
+          "type": [
+            "string"
+          ]
+        }
+      }
+    }
+  },
+  "test6": {
+    "json": {
+      "type": "string",
+      "required": true,
+      "json": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "required": true
+          }
+        }
+      }
+    }
   }
 }

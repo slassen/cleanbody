@@ -20,6 +20,22 @@ const validateField = (fieldSchema, field) => {
   }
 
   /**
+   * When you specify the json property the string will be parsed here and handled like
+   * an object, array, or string. You'll use the same properties that you would normally
+   * use for its respective type.
+   */
+  if (actualType === 'string' && fieldSchema.json) {
+    try {
+      const json = JSON.parse(field);
+      if (!validateField(fieldSchema.json, json)) {
+        return false;
+      }
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  /**
    * You can pass in patterns to validate strings as well. Keep in mind that you
    * will need to escape the pattern if include it in a JSON file.
    */
