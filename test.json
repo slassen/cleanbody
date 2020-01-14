@@ -1,98 +1,129 @@
 {
   "test1": {
-    "requiredString": {
-      "type": "string",
-      "required": true
-    },
-    "unrequiredString1": {
-      "type": "string",
-      "required": false
-    },
-    "unrequiredString2": {
-      "type": "string"
-    },
-    "unrequiredObject": {
-      "type": "object"
-    },
-    "requiredArray": {
-      "type": "array",
-      "required": true,
-      "children": {
+    "type": "object",
+    "properties": {
+      "requiredString": {
+        "type": "string",
+        "required": true
+      },
+      "unrequiredString1": {
+        "type": "string",
+        "required": false
+      },
+      "unrequiredString2": {
         "type": "string"
+      },
+      "unrequiredObject": {
+        "type": "object"
+      },
+      "requiredArray": {
+        "type": "array",
+        "required": true,
+        "children": {
+          "type": "string"
+        }
+      },
+      "unrequiredMulti": {
+        "type": [
+          "undefined",
+          "boolean",
+          "string"
+        ],
+        "required": false
       }
-    },
-    "unrequiredMulti": {
-      "type": [
-        "undefined",
-        "boolean",
-        "string"
-      ],
-      "required": false
     }
   },
   "test2": {
-    "email": {
-      "type": "string",
-      "required": true,
-      "pattern": "^([^<>()[\\]\\.,;:$!/=%&\\^*\\s@\"#$'\\+\\{\\}\\|~\\?`]+(\\.[^<>()[\\]\\.,;:$!/=%&\\^*\\s@\"#$'\\+\\{\\}\\|~\\?`]+)*)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
+    "type": "object",
+    "properties": {
+      "email": {
+        "type": "string",
+        "required": true,
+        "pattern": "^([^<>()[\\]\\.,;:$!/=%&\\^*\\s@\"#$'\\+\\{\\}\\|~\\?`]+(\\.[^<>()[\\]\\.,;:$!/=%&\\^*\\s@\"#$'\\+\\{\\}\\|~\\?`]+)*)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
+      }
     }
   },
   "test3": {
-    "array": {
-      "type": "array",
-      "required": true,
-      "minimum": 2,
-      "maximum": 3,
-      "children": {
-        "type": [
-          "string",
-          "object"
-        ]
-      }
-    }
-  },
-  "test4": {
-    "object": {
-      "type": "object",
-      "required": true,
-      "properties": {
-        "key1": {
-          "type": "string",
-          "required": true
-        },
-        "key2": {
-          "type": "boolean"
-        }
-      }
-    }
-  },
-  "test5": {
-    "json": {
-      "type": "string",
-      "required": true,
-      "json": {
+    "type": "object",
+    "properties": {
+      "array": {
         "type": "array",
+        "required": true,
+        "minimum": 2,
+        "maximum": 3,
         "children": {
           "type": [
-            "string"
+            "string",
+            "object"
           ]
         }
       }
     }
   },
-  "test6": {
-    "json": {
-      "type": "string",
-      "required": true,
-      "json": {
+  "test4": {
+    "type": "object",
+    "properties": {
+      "object": {
         "type": "object",
+        "required": true,
         "properties": {
-          "key": {
+          "key1": {
             "type": "string",
             "required": true
+          },
+          "key2": {
+            "type": "boolean"
           }
         }
       }
     }
+  },
+  "test5": {
+    "type": "object",
+    "properties": {
+      "json": {
+        "type": "string",
+        "required": true,
+        "json": {
+          "type": "array",
+          "children": {
+            "type": [
+              "string"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "test6": {
+    "type": "object",
+    "properties": {
+      "json": {
+        "type": "string",
+        "required": true,
+        "json": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "test7": {
+    "type": "array",
+    "minimum": 2,
+    "children": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "test8": {
+    "type": "string",
+    "required": true,
+    "pattern": "^([^<>()[\\]\\.,;:$!/=%&\\^*\\s@\"#$'\\+\\{\\}\\|~\\?`]+(\\.[^<>()[\\]\\.,;:$!/=%&\\^*\\s@\"#$'\\+\\{\\}\\|~\\?`]+)*)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
   }
 }

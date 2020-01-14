@@ -112,3 +112,17 @@ test('JSON strings', () => {
     json: "{\"key\":\"value\"}",
   })).toBe(true);
 });
+
+test('Arrays as root', () => {
+  expect(validate.test7({})).toBe(false);
+  expect(validate.test7([])).toBe(false);
+  expect(validate.test7(["string"])).toBe(false);
+  expect(validate.test7([{},{}])).toBe(false);
+  expect(validate.test7(["string", "string"])).toBe(true);
+});
+
+test('Email string as root', () => {
+  expect(validate.test8("test")).toBe(false);
+  expect(validate.test8(["test"])).toBe(false);
+  expect(validate.test8("slassnpm@gmail.com")).toBe(true);
+});

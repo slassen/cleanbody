@@ -91,16 +91,7 @@ const validateField = (fieldSchema, field) => {
 class Cleanbody {
   constructor(schema) {
     for (let key in schema) {
-      this[key] = (body) => {
-        const methodSchema = schema[key];
-        for (let key in methodSchema) {
-          if (!validateField(methodSchema[key], body[key])) {
-            return false;
-          }
-        }
-
-        return true;
-      };
+      this[key] = body => validateField(schema[key], body);
     }
   }
 };
