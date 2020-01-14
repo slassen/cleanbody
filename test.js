@@ -1,23 +1,9 @@
 const Cleanbody = require('./index');
 const schema = require('./test.json');
+const validate = new Cleanbody(schema);
 
-let testCount = 1;
-let failed = 0;
-let passed = 0;
-const displayTest = ( description, expected, actual) => {
-  if (expected === actual) passed++;
-  else failed++;
-
-  console.group(`\n #${testCount} ${description} [${expected === actual ? 'PASSED' : 'FAILED'}]`);
-  console.log(`expected: ${expected}, actual: ${actual} `);
-  console.groupEnd();
-  testCount++;
-}
-
-try {
-  const validate = new Cleanbody(schema);
-
-  const body1 = {
+test('Obmitting unrequired objects', () => {
+  expect(validate.test1({
     requiredString: 'string1',
     requiredArray: [
       'arraystring1',
@@ -25,159 +11,104 @@ try {
       'arraystring3'
     ],
     unrequiredMulti: true,
-  };
+  })).toBe(true);
+});
 
-  displayTest(
-    'Obmitting unrequired objects should pass.',
-    true,
-    validate.test1(body1),
-  );
+test('Setting an unrequired object', () => {
+  expect(validate.test1({
+    requiredString: 'string1',
+    unrequiredString1: 'string2',
+    unrequiredString2: 'string3',
+    requiredArray: [
+      'arraystring1',
+      'arraystring2',
+      'arraystring3'
+    ],
+    unrequiredObject: 'baddata',
+    unrequiredMulti: 'true',
+  })).toBe(false);
+});
 
-  body1.unrequiredString1 = 'string2';
-  body1.unrequiredString2 = 'string3';
-  body1.unrequiredObject = {},
-  body1.unrequiredMulti = 'true';
+test('Valid email', () => {
+  expect(validate.test2({ email: 'slassnpm@gmail.com' })).toBe(true);
+});
 
-  displayTest(
-    'Adding required objects that match types should pass.',
-    true,
-    validate.test1(body1),
-  );
+test('Invalid email', () => {
+  expect(validate.test2({ email: 'slassnpm@gmailcom' })).toBe(false);
+});
 
-  body1.unrequiredObject = 'baddata';
+test('Invalid types as a child of an array', () => {
+  expect(validate.test3({
+    array: [
+      'arraystring1',
+      'arraystring2',
+      [],
+    ]
+  })).toBe(false);
+});
 
-  displayTest(
-    'Setting an unrequired object as a string should fail.',
-    false,
-    validate.test1(body1),
-  );
+test('Valid types as a child of an array', () => {
+  expect(validate.test3({
+    array: [
+      'arraystring1',
+      'arraystring2',
+      {},
+    ],
+  })).toBe(true);
+});
 
-  // original regex ^([^<>()[\]\\.,;:$!/=%&\^*\s@"#$'\+\{\}\|~\?`]+(\.[^<>()[\]\\.,;:$!/=%&\^*\s@"#$'\+\{\}\|~\?`]+)*)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$
-  // escaped regex "^([^<>()[\\]\\.,;:$!/=%&\\^*\\s@\"#$'\\+\\{\\}\\|~\\?`]+(\\.[^<>()[\\]\\.,;:$!/=%&\\^*\\s@\"#$'\\+\\{\\}\\|~\\?`]+)*)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
-  displayTest(
-    'A valid email should pass with appropriate pattern.',
-    true,
-    validate.test2({ email: 'slassnpm@gmail.com' }),
-  );
+test('Minimum and maximum number of children', () => {
+  expect(validate.test3({
+    array: [
+      'arraystring1',
+    ],
+  })).toBe(false);
+  expect(validate.test3({
+    array: [
+      'arraystring1',
+      'arraystring2',
+      'arraystring3',
+      'arraystring4',
+    ],
+  })).toBe(false);
+});
 
-  displayTest(
-    'An invalid email should fail with appropriate pattern.',
-    false,
-    validate.test2({ email: 'slassnpm@gmailcom' }),
-  );
+test('Object with valid properties and obmitting an optional property', () => {
+  expect(validate.test4({
+    object: {
+      key1: 'string1',
+    },
+  })).toBe(true);
+});
 
-  displayTest(
-    'Adding invalid types as a child of an array should fail.',
-    false,
-    validate.test3({
-      array: [
-        'arraystring1',
-        'arraystring2',
-        [],
-      ]
-    }),
-  );
+test('An object obmitting a required property', () => {
+  expect(validate.test4({
+    object: {
+      key2: true,
+    },
+  })).toBe(false);
+});
 
-  displayTest(
-    'Adding valid types as a child of an array should pass.',
-    true,
-    validate.test3({
-      array: [
-        'arraystring1',
-        'arraystring2',
-        {},
-      ],
-    }),
-  );
+test('An object with invalid properties', () => {
+  expect(validate.test4({
+    object: {
+      key1: 'string1',
+      key2: 'badbool',
+    },
+  })).toBe(false);
+});
 
-  displayTest(
-    'Not meeting the minimum number of children should fail.',
-    false,
-    validate.test3({
-      array: [
-        'arraystring1',
-      ],
-    }),
-  );
-
-  displayTest(
-    'Exceeding the maximum number of children should fail.',
-    false,
-    validate.test3({
-      array: [
-        'arraystring1',
-        'arraystring2',
-        'arraystring3',
-        'arraystring4',
-      ],
-    }),
-  );
-
-  displayTest(
-    'An object with valid properties and obmitting an optional property should pass.',
-    true,
-    validate.test4({
-      object: {
-        key1: 'string1',
-      },
-    }),
-  );
-
-  displayTest(
-    'An object obmitting a required property should fail.',
-    false,
-    validate.test4({
-      object: {
-        key2: true,
-      },
-    }),
-  );
-
-  displayTest(
-    'An object with invalid properties should fail.',
-    false,
-    validate.test4({
-      object: {
-        key1: 'string1',
-        key2: 'badbool',
-      },
-    }),
-  );
-
-  displayTest(
-    'An invalid json string should fail.',
-    false,
-    validate.test5({
-      json: "abcdef",
-    }),
-  );
-
-  displayTest(
-    'A valid json string with validated properties should pass.',
-    true,
-    validate.test5({
-      json: "[\"string1\",\"string2\"]",
-    }),
-  );
-
-  displayTest(
-    'A valid json string with invalid properties should fail.',
-    false,
-    validate.test5({
-      json: "[\"string1\",[]]",
-    }),
-  );
-
-  displayTest(
-    'A valid json string with correct type should pass.',
-    true,
-    validate.test6({
-      json: "{\"key\":\"value\"}",
-    }),
-  );
-
-  console.log(`\nTESTS COMPLETE   ${passed} PASSED | ${failed} FAILED\n`)
-} catch (err) {
-  console.error('UNABLE TO START OR COMPLETE TESTS');
-  console.error(err);
-}
+test('JSON strings', () => {
+  expect(validate.test5({
+    json: "abcdef",
+  })).toBe(false);
+  expect(validate.test5({
+    json: "[\"string1\",\"string2\"]",
+  })).toBe(true);
+  expect(validate.test5({
+    json: "[\"string1\",[]]",
+  })).toBe(false);
+  expect(validate.test6({
+    json: "{\"key\":\"value\"}",
+  })).toBe(true);
+});
