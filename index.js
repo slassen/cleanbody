@@ -73,7 +73,7 @@ const validateField = (fieldSchema, field) => {
   const fieldProperties = fieldSchema.properties;
   if (actualType === 'object' && fieldProperties) {
     for (let key in field) {
-      if (!validateField(fieldProperties[key], field[key])) {
+      if (fieldProperties[key] && !validateField(fieldProperties[key], field[key])) {
         return false;
       }
     }
