@@ -1,3 +1,6 @@
+# cleanbody
+Cleanbody is a lightweight, no-dependency JSON body validator. It is useful for sanitizing request payloads.
+
 ### Installation and Usage
 
 1. `npm i -s cleanbody`

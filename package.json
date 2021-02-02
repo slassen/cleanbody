@@ -1,6 +1,6 @@
 {
   "name": "cleanbody",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/godmode/cleanbody.git"
+    "url": "git+https://github.com/slassen/cleanbody.git"
   },
   "keywords": [
     "clean",
@@ -23,9 +23,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/godmode/cleanbody/issues"
+    "url": "https://github.com/slassen/cleanbody/issues"
   },
-  "homepage": "https://github.com/godmode/cleanbody#readme",
+  "homepage": "https://github.com/slassen/cleanbody#readme",
   "devDependencies": {
     "jest": "24.9.0"
   }
